@@ -1,8 +1,16 @@
 
 var express = require('express');
+var bodyParser = require('body-parser');
+
 var app = express();
 var PORT = process.env.PORT || 3000;
-var todos = [{
+var todos = [];
+var todoNextId = 1;
+
+// to set a middleware
+app.use(bodyParser.json());
+
+/*{
 	id: 1,
 	description: 'Meet mom for lunch',
 	completed: false
@@ -12,9 +20,9 @@ var todos = [{
 	completed: false
 },{
 	id: 3,
-	description: 'Study Node.js',
+	description: 'Study Node.js until finish',
 	completed: true
-}];
+}];*/
 
 // id3
 //completed true
@@ -49,7 +57,30 @@ app.get('/todos/:id', function (req, res){
 });
 
 
+//POST /todos
+app.post('/todos', function (req, res){
+	var body = req.body;
+
+	// add id field
+	body.id = todoNextId;
+	todoNextId++;
+
+	// push body into array
+	todos.push(body);
+
+	//console.log('description: ' + body.description);
+
+	res.json(body);
+});
+
+
 
 app.listen(PORT, function () {
 	console.log('Express listening on port' + PORT );
 })
+
+
+
+
+
+
